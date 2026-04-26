@@ -22,19 +22,20 @@ git push origin main --force
 ```
 
 ### 步骤 B：同步自定义分支 (custom)
-将 `main` 的最新更改合并到您的开发分支：
+为了保持提交历史的线性（linear history），必须使用 rebase 而非 merge 将 `main` 的更新合入 `custom`：
 ```bash
 git checkout custom
-git merge main
-# 或者使用 rebase 以保持历史线性
-# git rebase main
+git rebase main
+# 如果发生冲突，解决后运行:
+# git add <冲突文件> && git rebase --continue
+git push origin custom --force
 ```
 
 ## 3. 开发建议
 
 - **始终在 custom 分支工作**：不要在 `main` 分支进行任何提交。
-- **定期合入上游**：建议每周或在上游有重大更新时执行一次同步。
-- **解决冲突**：在 `git merge main` 过程中如果出现冲突，解决后提交即可。
+- **强制线性历史**：禁止在 `custom` 分支使用 `merge` 合并 `main`，始终使用 `rebase`。
+- **强制推送**：由于 `rebase` 会改变提交基准，同步后需要使用 `git push origin custom --force`。
 
 ---
 *最后更新时间：2026年4月26日*
